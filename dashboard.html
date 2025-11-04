@@ -9,37 +9,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9fafb; /* Very light gray background */
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
         .text-teal { color: #0d9488; }
         .bg-teal { background-color: #0d9488; }
-        .border-teal { border-color: #0d9488; }
-
-        /* Reusing the button style from index.html for consistency */
         .btn-teal {
-            background-color: #0d9488;
-            color: white;
-            transition: all 0.3s ease;
+            background-color: #0d9488; color: white; transition: all 0.3s ease;
             box-shadow: 0 4px 14px 0 rgba(13, 148, 136, 0.39);
         }
         .btn-teal:hover {
-            transform: scale(1.05);
-            background-color: #0f766e;
+            transform: scale(1.05); background-color: #0f766e;
             box-shadow: 0 6px 20px 0 rgba(13, 148, 136, 0.5);
         }
-
-        /* Sidebar link styles */
-        .sidebar-link {
-            @apply flex items-center space-x-3 p-3 rounded-lg text-lg text-gray-700 font-semibold transition-colors duration-200;
-        }
-        .sidebar-link:hover {
-            @apply bg-gray-200;
-        }
-        .sidebar-link.active {
-            @apply bg-teal text-white shadow-md;
-        }
+        .sidebar-link { @apply flex items-center space-x-3 p-3 rounded-lg text-lg text-gray-700 font-semibold transition-colors duration-200; }
+        .sidebar-link:hover { @apply bg-gray-200; }
+        .sidebar-link.active { @apply bg-teal text-white shadow-md; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -95,56 +78,46 @@
         </main>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Page-specific setup ---
-        const currentPage = window.location.pathname.split('/').pop();
-        const userNameDisplay = document.getElementById('user-name-display') || document.getElementById('profile-user-name');
-        
-        // --- Session check ---
-        const loggedInUser = sessionStorage.getItem('userName');
-        if (loggedInUser) {
-            if (userNameDisplay) {
-                const welcomeText = currentPage === 'dashboard.html' ? `Welcome back, ${loggedInUser}!` : loggedInUser;
-                userNameDisplay.textContent = welcomeText;
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPage = window.location.pathname.split('/').pop();
+            const userNameDisplay = document.getElementById('user-name-display');
+            const loggedInUser = sessionStorage.getItem('userName');
+
+            if (loggedInUser) {
+                if (userNameDisplay) {
+                    userNameDisplay.textContent = `Welcome back, ${loggedInUser}!`;
+                }
+            } else {
+                alert("You must be logged in to view this page.");
+                window.location.href = 'index.html';
             }
-        } else {
-            alert("You must be logged in to view this page.");
-            window.location.href = 'index.html';
-        }
-        
-        // --- Reusable Sidebar Builder ---
-        const sidebarContainer = document.getElementById('sidebar');
-        if (sidebarContainer) {
-            // This structure ensures the logout button is a separate element at the bottom.
-            // The "justify-between" class on the <nav> tag pushes them apart vertically.
-            const sidebarHTML = `
-                <div>
-                    <div class="mb-10">
-                        <h1 class="text-3xl font-bold text-teal">PRAGATI</h1>
-                    </div>
+            
+            const sidebarContainer = document.getElementById('sidebar');
+            if (sidebarContainer) {
+                const sidebarHTML = `
+                    <div>
+                        <div class="mb-10"><h1 class="text-3xl font-bold text-teal">PRAGATI</h1></div>
                     <ul class="space-y-4">
                         <li><a href="dashboard.html" class="sidebar-link ${currentPage === 'dashboard.html' ? 'active' : ''}"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><span>Dashboard</span></a></li>
                         <li><a href="#" class="sidebar-link"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.206 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.794 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.794 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.206 18 16.5 18s-3.332.477-4.5 1.253"></path></svg><span>My Path</span></a></li>
                         <li><a href="#" class="sidebar-link"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.01 12.01 0 003 12c0 2.21.592 4.237 1.65 6.007l-3.462 3.462a1 1 0 001.414 1.414l3.462-3.462A12.01 12.01 0 0012 21c2.31 0 4.438-.546 6.368-1.572l3.462 3.462a1 1 0 001.414-1.414l-3.462-3.462A12.01 12.01 0 0021 12c0-4.062-1.354-7.708-3.382-10.016z"></path></svg><span>Quests</span></a></li>                        
                         <li><a href="profile.html" class="sidebar-link ${currentPage === 'profile.html' ? 'active' : ''}"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg><span>Profile</span></a></li>
-                        </ul>
-                </div>
-                <button id="logout-btn" class="w-full flex items-center justify-center space-x-2 bg-gray-100 text-gray-700 font-bold py-3 px-4 rounded-lg hover:bg-red-500 hover:text-white transition-colors duration-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    <span>Logout</span>
-                </button>
-            `;
-            sidebarContainer.innerHTML = sidebarHTML;
-
-            // Add event listener to the newly created logout button
-            document.getElementById('logout-btn').addEventListener('click', () => {
-                sessionStorage.removeItem('userName');
-                alert("You have been logged out.");
-                window.location.href = 'index.html';
-            });
-        }
-    });
-</script>
+                    </ul>
+                    </div>
+                    <button id="logout-btn" class="w-full flex items-center justify-center space-x-2 bg-gray-100 text-gray-700 font-bold py-3 px-4 rounded-lg hover:bg-red-500 hover:text-white transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span>Logout</span>
+                    </button>
+                `;
+                sidebarContainer.innerHTML = sidebarHTML;
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    sessionStorage.clear(); // Clear all user data
+                    alert("You have been logged out.");
+                    window.location.href = 'index.html';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

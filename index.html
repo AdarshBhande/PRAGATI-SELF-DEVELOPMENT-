@@ -255,40 +255,47 @@
             loginForm.classList.add('hidden');
         });
         
-        // --- LOGIN FORM LOGIC ---
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const loginBtn = document.getElementById('login-submit-btn');
-            const loginMessage = document.getElementById('login-message');
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Logging In...';
-            loginMessage.textContent = '';
-            const formData = {
-                action: 'login',
-                email: document.getElementById('login-email').value,
-                password: document.getElementById('login-password').value
-            };
-            try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
-                const result = await response.json();
-                if (result.status === 'success' && result.userName) {
-                    sessionStorage.setItem('userName', result.userName);
-                    loginMessage.textContent = `Welcome, ${result.userName}! Redirecting...`;
-                    loginMessage.style.color = 'green';
-                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
-                } else if (result.status === 'success' && !result.userName) {
-                    throw new Error("Login successful, but profile name is missing.");
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                loginMessage.textContent = 'Error: ' + error.message;
-                loginMessage.style.color = 'red';
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Log In';
-            }
-        });
+// --- LOGIN FORM LOGIC (Updated) ---
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const loginBtn = document.getElementById('login-submit-btn');
+    const loginMessage = document.getElementById('login-message');
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Logging In...';
+    loginMessage.textContent = '';
+    
+    const formData = {
+        action: 'login',
+        email: document.getElementById('login-email').value,
+        password: document.getElementById('login-password').value
+    };
 
+    try {
+        const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
+        const result = await response.json();
+
+        if (result.status === 'success' && result.userName) {
+            // --- NEW: Save all user data to session ---
+            sessionStorage.setItem('userName', result.userName);
+            sessionStorage.setItem('userEmail', formData.email); // Store email to know WHO to update
+            sessionStorage.setItem('photoURL', result.photoURL || ''); // Store photo URL (or empty string)
+            
+            loginMessage.textContent = `Welcome, ${result.userName}! Redirecting...`;
+            loginMessage.style.color = 'green';
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+
+        } else if (result.status === 'success' && !result.userName) {
+            throw new Error("Login successful, but profile name is missing.");
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        loginMessage.textContent = 'Error: ' + error.message;
+        loginMessage.style.color = 'red';
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Log In';
+    }
+});
         // --- SIGNUP FORM LOGIC ---
         const sendOtpBtn = document.getElementById('send-otp-btn');
         const createAccountBtn = document.getElementById('create-account-btn');
