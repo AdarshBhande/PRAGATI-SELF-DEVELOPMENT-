@@ -3,40 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmpowerU - Unlock Your Potential</title>
-    <!-- Tailwind CSS CDN -->
+    <title>PRAGATI - Unlock Your Potential</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for the new light, teal theme */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffffff; /* White background */
-            color: #1f2937; /* Dark gray text */
+            background-color: #ffffff;
+            color: #1f2937;
         }
-
-        .hero-bg {
-            background-color: #f0f9ff; /* A very light blue for a soft touch */
-        }
-
-        .text-teal {
-            color: #0d9488; /* Teal-600 */
-        }
-        
-        .bg-teal {
-             background-color: #0d9488; /* Teal-600 */
-        }
-        
-        .border-teal {
-            border-color: #0d9488;
-        }
-
-        /* Button style with animation */
+        .hero-bg { background-color: #f0f9ff; }
+        .text-teal { color: #0d9488; }
+        .bg-teal { background-color: #0d9488; }
+        .border-teal { border-color: #0d9488; }
         .btn-teal {
-            background-color: #0d9488; /* Teal-600 */
+            background-color: #0d9488;
             color: white;
             transition: all 0.3s ease;
             box-shadow: 0 4px 14px 0 rgba(13, 148, 136, 0.39);
@@ -44,65 +27,40 @@
         }
         .btn-teal:hover {
             transform: scale(1.05);
-            background-color: #0f766e; /* Teal-700 */
+            background-color: #0f766e;
             box-shadow: 0 6px 20px 0 rgba(13, 148, 136, 0.5);
-            animation: none; /* Stop animation on hover */
+            animation: none;
         }
-        
         @keyframes pulse-teal {
-            0% {
-                transform: scale(0.98);
-                box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7);
-            }
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
-            }
-            100% {
-                transform: scale(0.98);
-                box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
-            }
+            0% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
+            100% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
         }
-        
-        /* New hover animation for nav login button */
-        .nav-login-btn {
-            transition: all 0.2s ease-in-out;
-        }
-        .nav-login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            background-color: #0d9488;
-            color: white;
-        }
-
-        /* Scroll-triggered animations */
+        .nav-login-btn { transition: all 0.2s ease-in-out; }
+        .nav-login-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); }
         .reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <!-- App Container -->
     <div id="app">
-
-        <!-- Landing Page Section -->
         <main id="landing-page" class="w-full">
-            <!-- Header -->
             <header class="bg-white/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-sm">
                 <div class="container mx-auto px-6 py-4 flex justify-between items-center">
                     <h1 class="text-2xl font-bold text-teal">PRAGATI</h1>
-                    <button id="login-btn-nav" class="nav-login-btn border border-teal text-teal px-4 py-2 rounded-lg font-semibold">Log In</button>
+                    <button id="login-btn-nav" class="nav-login-btn border border-teal text-teal px-4 py-2 rounded-lg font-semibold hover:bg-teal hover:text-white">Log In</button>
+                    <div id="user-info-nav" class="hidden items-center space-x-4">
+                        <span id="user-name-nav" class="font-semibold text-gray-700"></span>
+                        <button id="logout-btn-nav" class="nav-login-btn border border-red-500 text-red-500 px-4 py-2 rounded-lg font-semibold hover:bg-red-500 hover:text-white">Logout</button>
+                    </div>
                 </div>
             </header>
 
-            <!-- Hero Section -->
             <section class="hero-bg min-h-screen flex items-center justify-center pt-20">
                 <div class="text-center z-10 p-6">
                     <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight text-gray-900">Unlock Your Potential. <br class="hidden md:block"/> <span class="text-teal">Master Your Future.</span></h1>
@@ -110,41 +68,24 @@
                     <button id="cta-hero-btn" class="btn-teal text-white px-8 py-4 rounded-lg text-lg font-bold">Start Your Journey for Free</button>
                 </div>
             </section>
-
-            <!-- Problem Section -->
+            
             <section id="problem" class="py-20 bg-white">
                 <div class="container mx-auto px-6 text-center">
                     <h2 class="text-3xl md:text-4xl font-bold mb-12 reveal text-gray-900">The Hidden Hurdle to Success</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <!-- Card 1: Communication -->
                         <div class="bg-gray-50 p-8 rounded-xl reveal shadow-md border border-gray-200">
-                            <div class="mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                            </div>
                             <h3 class="text-xl font-semibold mb-2 text-gray-900">Communication</h3>
                             <p class="text-gray-600">Struggle to voice your ideas in discussions?</p>
                         </div>
-                        <!-- Card 2: Confidence -->
                         <div class="bg-gray-50 p-8 rounded-xl reveal shadow-md border border-gray-200" style="transition-delay: 100ms;">
-                            <div class="mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
-                            </div>
                             <h3 class="text-xl font-semibold mb-2 text-gray-900">Confidence</h3>
                             <p class="text-gray-600">Hesitate to take the lead in projects?</p>
                         </div>
-                        <!-- Card 3: Teamwork -->
                         <div class="bg-gray-50 p-8 rounded-xl reveal shadow-md border border-gray-200" style="transition-delay: 200ms;">
-                            <div class="mb-4">
-                               <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                            </div>
                             <h3 class="text-xl font-semibold mb-2 text-gray-900">Teamwork</h3>
                             <p class="text-gray-600">Find it hard to collaborate effectively?</p>
                         </div>
-                        <!-- Card 4: Leadership -->
                         <div class="bg-gray-50 p-8 rounded-xl reveal shadow-md border border-gray-200" style="transition-delay: 300ms;">
-                            <div class="mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                            </div>
                             <h3 class="text-xl font-semibold mb-2 text-gray-900">Leadership</h3>
                             <p class="text-gray-600">Feel unprepared to guide and inspire others?</p>
                         </div>
@@ -152,36 +93,31 @@
                 </div>
             </section>
 
-            <!-- How It Works Section -->
             <section id="how-it-works" class="py-20 bg-gray-50">
                 <div class="container mx-auto px-6 text-center">
                     <h2 class="text-3xl md:text-4xl font-bold mb-16 reveal text-gray-900">Your Path to Confidence in 3 Simple Steps</h2>
                     <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-0 relative">
-                        <!-- Step 1 -->
                         <div class="flex flex-col items-center text-center w-64 reveal">
                             <div class="bg-teal text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold mb-4 border-4 border-teal-200">1</div>
                             <h3 class="text-xl font-semibold mb-2 text-gray-900">Assess Your Skills</h3>
-                            <p class="text-gray-600">Take a quick quiz to identify your strengths and areas for growth.</p>
+                            <p class="text-gray-600">Take a quick quiz to identify your strengths.</p>
                         </div>
                         <div class="hidden md:block h-1 w-32 bg-teal-100"></div>
-                        <!-- Step 2 -->
                         <div class="flex flex-col items-center text-center w-64 reveal" style="transition-delay: 200ms;">
                             <div class="bg-teal text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold mb-4 border-4 border-teal-200">2</div>
                             <h3 class="text-xl font-semibold mb-2 text-gray-900">Get a Personalized Plan</h3>
-                            <p class="text-gray-600">EmpowerU creates a custom learning path tailored to your unique goals.</p>
+                            <p class="text-gray-600">Receive a custom learning path for your goals.</p>
                         </div>
                         <div class="hidden md:block h-1 w-32 bg-teal-100"></div>
-                        <!-- Step 3 -->
                         <div class="flex flex-col items-center text-center w-64 reveal" style="transition-delay: 400ms;">
                             <div class="bg-teal text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold mb-4 border-4 border-teal-200">3</div>
                             <h3 class="text-xl font-semibold mb-2 text-gray-900">Learn & Grow</h3>
-                            <p class="text-gray-600">Complete daily challenges, track your progress, and see real results.</p>
+                            <p class="text-gray-600">Complete challenges and track your progress.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Final CTA Section -->
             <section class="py-20 hero-bg">
                 <div class="container mx-auto px-6 text-center z-10 relative">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6 reveal text-gray-900">Ready to Shape Your Future?</h2>
@@ -189,54 +125,49 @@
                 </div>
             </section>
 
-            <!-- Footer -->
             <footer class="bg-gray-800 text-white py-6">
                 <div class="container mx-auto px-6 text-center">
-                    <p class="text-gray-400">&copy; 2024 EmpowerU. All rights reserved.</p>
+                    <p class="text-gray-400">&copy; 2025 PRAGATI. All rights reserved.</p>
                 </div>
             </footer>
         </main>
         
-        <!-- Authentication Modal (Initially Hidden) -->
         <div id="auth-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
             <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md relative">
                 <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
-                
                 <div class="relative flex border-b border-gray-200 mb-6">
                     <button id="login-tab" class="flex-1 py-2 font-semibold text-teal">Log In</button>
                     <button id="signup-tab" class="flex-1 py-2 font-semibold text-gray-500">Sign Up</button>
                     <div id="underline" class="absolute bottom-0 h-0.5 bg-teal transition-all duration-300 ease-in-out"></div>
                 </div>
 
-                <!-- Login Form -->
                 <form id="login-form" class="space-y-4">
                     <input type="email" id="login-email" placeholder="Email" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal" required>
                     <input type="password" id="login-password" placeholder="Password" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal" required>
-                    <button type="submit" class="w-full bg-teal text-white p-3 rounded-lg font-bold hover:bg-teal-700">Log In</button>
+                    <p id="login-message" class="text-sm text-center text-gray-600"></p>
+                    <button type="submit" id="login-submit-btn" class="w-full bg-teal text-white p-3 rounded-lg font-bold hover:bg-teal-700">Log In</button>
                 </form>
 
-                <!-- Signup Form -->
                 <form id="signup-form" class="hidden space-y-4">
                     <input type="text" id="signup-name" placeholder="Full Name" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal" required>
                     <input type="email" id="signup-email" placeholder="Email" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal" required>
-                    <input type="password" id="signup-password" placeholder="Password" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal" required>
-                    <button type="submit" class="w-full bg-teal text-white p-3 rounded-lg font-bold hover:bg-teal-700">Create Account</button>
+                    <button type="button" id="send-otp-btn" class="w-full bg-gray-500 text-white p-3 rounded-lg font-bold hover:bg-gray-600">Send OTP</button>
+                    <div id="otp-section" class="hidden space-y-4">
+                        <input type="password" id="signup-password" placeholder="Create Password" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal" required>
+                        <input type="text" id="signup-otp" placeholder="6-Digit OTP" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal" required>
+                        <button type="submit" id="create-account-btn" class="w-full bg-teal text-white p-3 rounded-lg font-bold hover:bg-teal-700">Create Account</button>
+                    </div>
+                    <p id="form-message" class="text-sm text-center text-gray-600"></p>
                 </form>
-                
-                <div class="text-center my-4 text-gray-500">or</div>
-                
-                <button id="google-signin-btn" class="w-full bg-white border border-gray-300 p-3 rounded-lg flex items-center justify-center hover:bg-gray-50 text-gray-700">
-                    <svg class="w-6 h-6 mr-2" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.13 0 5.9 1.08 8.03 3.02l6.23-6.23C34.91 2.82 29.88 0 24 0 14.62 0 6.6 5.88 2.81 14.39l7.02 5.46C11.53 13.59 17.22 9.5 24 9.5z"/><path fill="#34A853" d="M46.19 23.64c0-1.56-.14-3.06-.4-4.5H24v8.48h12.47c-.54 2.74-2.1 5.08-4.49 6.69l6.62 5.13C42.82 35.11 46.19 30.01 46.19 23.64z"/><path fill="#FBBC05" d="M9.83 28.85c-.47-1.41-.74-2.91-.74-4.47s.27-3.06.74-4.47l-7.02-5.46C1.06 17.03 0 20.39 0 24.38s1.06 7.35 2.81 9.93l7.02-5.46z"/><path fill="#EA4335" d="M24 48c5.88 0 10.91-1.94 14.55-5.25l-6.62-5.13c-1.94 1.31-4.43 2.09-7.93 2.09-6.79 0-12.48-4.09-14.17-9.83l-7.02 5.46C6.6 42.12 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
-                    Sign in with Google
-                </button>
             </div>
         </div>
-
     </div>
 
-    <!-- JS for Animations and Modal -->
     <script>
-        // --- SCROLL ANIMATION LOGIC ---
+        // --- GOOGLE SCRIPT URL ---
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgvLGJfxDw9dnhddccv_dD7PIWQ-nCzqpsZWdHH_-5JKO53jKOzTMqnoCSNGUVcE_4/exec";
+        
+        // --- SCROLL ANIMATIONS ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -244,51 +175,74 @@
                 }
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
         });
 
-        // --- AUTH MODAL LOGIC ---
+        // --- AUTH MODAL & UI ---
         const authModal = document.getElementById('auth-modal');
-        const openAuthModal = () => {
-            authModal.classList.remove('hidden');
-            // Set initial underline position on open
-            moveUnderline(loginTab);
-        }
-        const closeAuthModal = () => authModal.classList.add('hidden');
-        
-        document.getElementById('login-btn-nav').addEventListener('click', openAuthModal);
-        document.getElementById('cta-hero-btn').addEventListener('click', openAuthModal);
-        document.getElementById('cta-final-btn').addEventListener('click', openAuthModal);
-        document.getElementById('close-modal-btn').addEventListener('click', closeAuthModal);
-
+        const loginBtnNav = document.getElementById('login-btn-nav');
+        const userInfoNav = document.getElementById('user-info-nav');
+        const userNameNav = document.getElementById('user-name-nav');
+        const logoutBtnNav = document.getElementById('logout-btn-nav');
         const loginTab = document.getElementById('login-tab');
         const signupTab = document.getElementById('signup-tab');
+        const underline = document.getElementById('underline');
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
-        const underline = document.getElementById('underline');
 
-        // Function to move the underline
+        const openAuthModal = () => { authModal.classList.remove('hidden'); moveUnderline(loginTab); }
+        const closeAuthModal = () => authModal.classList.add('hidden');
+        
         const moveUnderline = (target) => {
             underline.style.left = `${target.offsetLeft}px`;
             underline.style.width = `${target.offsetWidth}px`;
         };
-        
-        // Handle window resize to keep underline correct
-        window.addEventListener('resize', () => {
-            if (!authModal.classList.contains('hidden')) {
-                const activeTab = loginForm.classList.contains('hidden') ? signupTab : loginTab;
-                moveUnderline(activeTab);
+
+        const updateNavUI = (userName) => {
+            if (userName) {
+                loginBtnNav.classList.add('hidden');
+                userInfoNav.classList.add('flex');
+                userInfoNav.classList.remove('hidden');
+                userNameNav.textContent = `Welcome, ${userName}`;
+            } else {
+                loginBtnNav.classList.remove('hidden');
+                userInfoNav.classList.add('hidden');
+                userInfoNav.classList.remove('flex');
             }
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('close-modal-btn').addEventListener('click', closeAuthModal);
+        loginBtnNav.addEventListener('click', openAuthModal);
+        logoutBtnNav.addEventListener('click', () => {
+            sessionStorage.removeItem('userName');
+            updateNavUI(null);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavUI(sessionStorage.getItem('userName'));
+        });
+
+        const ctaButtons = [
+            document.getElementById('cta-hero-btn'),
+            document.getElementById('cta-final-btn')
+        ];
+        ctaButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const loggedInUser = sessionStorage.getItem('userName');
+                if (loggedInUser) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    openAuthModal();
+                }
+            });
         });
 
         loginTab.addEventListener('click', (e) => {
             moveUnderline(e.currentTarget);
             loginTab.classList.add('text-teal');
-            loginTab.classList.remove('text-gray-500');
             signupTab.classList.remove('text-teal');
-            signupTab.classList.add('text-gray-500');
             loginForm.classList.remove('hidden');
             signupForm.classList.add('hidden');
         });
@@ -296,15 +250,92 @@
         signupTab.addEventListener('click', (e) => {
             moveUnderline(e.currentTarget);
             signupTab.classList.add('text-teal');
-            signupTab.classList.remove('text-gray-500');
             loginTab.classList.remove('text-teal');
-            loginTab.classList.add('text-gray-500');
             signupForm.classList.remove('hidden');
             loginForm.classList.add('hidden');
         });
         
-        // Note: The form submission will not do anything as the backend (Firebase) code has been removed.
-        // This is a frontend-only template.
+        // --- LOGIN FORM LOGIC ---
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loginBtn = document.getElementById('login-submit-btn');
+            const loginMessage = document.getElementById('login-message');
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging In...';
+            loginMessage.textContent = '';
+            const formData = {
+                action: 'login',
+                email: document.getElementById('login-email').value,
+                password: document.getElementById('login-password').value
+            };
+            try {
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
+                const result = await response.json();
+                if (result.status === 'success' && result.userName) {
+                    sessionStorage.setItem('userName', result.userName);
+                    loginMessage.textContent = `Welcome, ${result.userName}! Redirecting...`;
+                    loginMessage.style.color = 'green';
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+                } else if (result.status === 'success' && !result.userName) {
+                    throw new Error("Login successful, but profile name is missing.");
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                loginMessage.textContent = 'Error: ' + error.message;
+                loginMessage.style.color = 'red';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Log In';
+            }
+        });
+
+        // --- SIGNUP FORM LOGIC ---
+        const sendOtpBtn = document.getElementById('send-otp-btn');
+        const createAccountBtn = document.getElementById('create-account-btn');
+        const otpSection = document.getElementById('otp-section');
+        const formMessage = document.getElementById('form-message');
+        sendOtpBtn.addEventListener('click', async () => {
+            const email = document.getElementById('signup-email').value;
+            if (!email) { formMessage.textContent = "Please enter your email."; return; }
+            sendOtpBtn.disabled = true; sendOtpBtn.textContent = 'Sending...';
+            try {
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'requestOTP', email: email }) });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    formMessage.textContent = 'OTP has been sent!';
+                    otpSection.classList.remove('hidden');
+                    sendOtpBtn.classList.add('hidden');
+                } else { throw new Error(result.message); }
+            } catch (error) {
+                formMessage.textContent = 'Error: ' + error.message;
+                sendOtpBtn.disabled = false; sendOtpBtn.textContent = 'Send OTP';
+            }
+        });
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            createAccountBtn.disabled = true; createAccountBtn.textContent = 'Creating...';
+            const formData = {
+                action: 'submitSignup',
+                name: document.getElementById('signup-name').value,
+                email: document.getElementById('signup-email').value,
+                password: document.getElementById('signup-password').value,
+                otp: document.getElementById('signup-otp').value
+            };
+            try {
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    formMessage.textContent = "Success! Please log in.";
+                    signupForm.reset();
+                    otpSection.classList.add('hidden');
+                    sendOtpBtn.classList.remove('hidden');
+                } else { throw new Error(result.message); }
+            } catch (error) {
+                formMessage.textContent = 'Error: ' + error.message;
+            } finally {
+                createAccountBtn.disabled = false; createAccountBtn.textContent = 'Create Account';
+            }
+        });
     </script>
 </body>
 </html>
