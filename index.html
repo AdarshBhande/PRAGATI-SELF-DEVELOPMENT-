@@ -164,22 +164,13 @@
     </div>
 
     <script>
-        // --- GOOGLE SCRIPT URL ---
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgvLGJfxDw9dnhddccv_dD7PIWQ-nCzqpsZWdHH_-5JKO53jKOzTMqnoCSNGUVcE_4/exec";
         
-        // --- SCROLL ANIMATIONS ---
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal').forEach(el => { observer.observe(el); });
 
-        // --- AUTH MODAL & UI ---
         const authModal = document.getElementById('auth-modal');
         const loginBtnNav = document.getElementById('login-btn-nav');
         const userInfoNav = document.getElementById('user-info-nav');
@@ -193,41 +184,31 @@
 
         const openAuthModal = () => { authModal.classList.remove('hidden'); moveUnderline(loginTab); }
         const closeAuthModal = () => authModal.classList.add('hidden');
-        
         const moveUnderline = (target) => {
             underline.style.left = `${target.offsetLeft}px`;
             underline.style.width = `${target.offsetWidth}px`;
         };
-
         const updateNavUI = (userName) => {
             if (userName) {
                 loginBtnNav.classList.add('hidden');
-                userInfoNav.classList.add('flex');
-                userInfoNav.classList.remove('hidden');
+                userInfoNav.classList.add('flex'); userInfoNav.classList.remove('hidden');
                 userNameNav.textContent = `Welcome, ${userName}`;
             } else {
                 loginBtnNav.classList.remove('hidden');
-                userInfoNav.classList.add('hidden');
-                userInfoNav.classList.remove('flex');
+                userInfoNav.classList.add('hidden'); userInfoNav.classList.remove('flex');
             }
         }
 
-        // --- EVENT LISTENERS ---
         document.getElementById('close-modal-btn').addEventListener('click', closeAuthModal);
         loginBtnNav.addEventListener('click', openAuthModal);
         logoutBtnNav.addEventListener('click', () => {
-            sessionStorage.removeItem('userName');
+            sessionStorage.clear();
             updateNavUI(null);
         });
-
         document.addEventListener('DOMContentLoaded', () => {
             updateNavUI(sessionStorage.getItem('userName'));
         });
-
-        const ctaButtons = [
-            document.getElementById('cta-hero-btn'),
-            document.getElementById('cta-final-btn')
-        ];
+        const ctaButtons = [document.getElementById('cta-hero-btn'), document.getElementById('cta-final-btn')];
         ctaButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const loggedInUser = sessionStorage.getItem('userName');
@@ -238,65 +219,51 @@
                 }
             });
         });
-
         loginTab.addEventListener('click', (e) => {
             moveUnderline(e.currentTarget);
-            loginTab.classList.add('text-teal');
-            signupTab.classList.remove('text-teal');
-            loginForm.classList.remove('hidden');
-            signupForm.classList.add('hidden');
+            loginTab.classList.add('text-teal'); signupTab.classList.remove('text-teal');
+            loginForm.classList.remove('hidden'); signupForm.classList.add('hidden');
         });
-
         signupTab.addEventListener('click', (e) => {
             moveUnderline(e.currentTarget);
-            signupTab.classList.add('text-teal');
-            loginTab.classList.remove('text-teal');
-            signupForm.classList.remove('hidden');
-            loginForm.classList.add('hidden');
+            signupTab.classList.add('text-teal'); loginTab.classList.remove('text-teal');
+            signupForm.classList.remove('hidden'); loginForm.classList.add('hidden');
         });
         
-// --- LOGIN FORM LOGIC (Updated) ---
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const loginBtn = document.getElementById('login-submit-btn');
-    const loginMessage = document.getElementById('login-message');
-    loginBtn.disabled = true;
-    loginBtn.textContent = 'Logging In...';
-    loginMessage.textContent = '';
-    
-    const formData = {
-        action: 'login',
-        email: document.getElementById('login-email').value,
-        password: document.getElementById('login-password').value
-    };
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loginBtn = document.getElementById('login-submit-btn');
+            const loginMessage = document.getElementById('login-message');
+            loginBtn.disabled = true; loginBtn.textContent = 'Logging In...';
+            loginMessage.textContent = '';
+            const formData = {
+                action: 'login',
+                email: document.getElementById('login-email').value,
+                password: document.getElementById('login-password').value
+            };
+            try {
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
+                const result = await response.json();
+                if (result.status === 'success' && result.userName) {
+                    sessionStorage.setItem('userName', result.userName);
+                    sessionStorage.setItem('userEmail', formData.email); 
+                    sessionStorage.setItem('photoURL', result.photoURL || ''); 
+                    
+                    loginMessage.textContent = `Welcome, ${result.userName}! Redirecting...`;
+                    loginMessage.style.color = 'green';
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+                } else if (result.status === 'success' && !result.userName) {
+                    throw new Error("Login successful, but profile name is missing.");
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                loginMessage.textContent = 'Error: ' + error.message;
+                loginMessage.style.color = 'red';
+                loginBtn.disabled = false; loginBtn.textContent = 'Log In';
+            }
+        });
 
-    try {
-        const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
-        const result = await response.json();
-
-        if (result.status === 'success' && result.userName) {
-            // --- NEW: Save all user data to session ---
-            sessionStorage.setItem('userName', result.userName);
-            sessionStorage.setItem('userEmail', formData.email); // Store email to know WHO to update
-            sessionStorage.setItem('photoURL', result.photoURL || ''); // Store photo URL (or empty string)
-            
-            loginMessage.textContent = `Welcome, ${result.userName}! Redirecting...`;
-            loginMessage.style.color = 'green';
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
-
-        } else if (result.status === 'success' && !result.userName) {
-            throw new Error("Login successful, but profile name is missing.");
-        } else {
-            throw new Error(result.message);
-        }
-    } catch (error) {
-        loginMessage.textContent = 'Error: ' + error.message;
-        loginMessage.style.color = 'red';
-        loginBtn.disabled = false;
-        loginBtn.textContent = 'Log In';
-    }
-});
-        // --- SIGNUP FORM LOGIC ---
         const sendOtpBtn = document.getElementById('send-otp-btn');
         const createAccountBtn = document.getElementById('create-account-btn');
         const otpSection = document.getElementById('otp-section');
@@ -310,8 +277,7 @@ loginForm.addEventListener('submit', async (e) => {
                 const result = await response.json();
                 if (result.status === 'success') {
                     formMessage.textContent = 'OTP has been sent!';
-                    otpSection.classList.remove('hidden');
-                    sendOtpBtn.classList.add('hidden');
+                    otpSection.classList.remove('hidden'); sendBtn.classList.add('hidden');
                 } else { throw new Error(result.message); }
             } catch (error) {
                 formMessage.textContent = 'Error: ' + error.message;
@@ -334,8 +300,7 @@ loginForm.addEventListener('submit', async (e) => {
                 if (result.status === 'success') {
                     formMessage.textContent = "Success! Please log in.";
                     signupForm.reset();
-                    otpSection.classList.add('hidden');
-                    sendOtpBtn.classList.remove('hidden');
+                    otpSection.classList.add('hidden'); sendOtpBtn.classList.remove('hidden');
                 } else { throw new Error(result.message); }
             } catch (error) {
                 formMessage.textContent = 'Error: ' + error.message;

@@ -36,7 +36,8 @@
                 <div class="flex flex-col md:flex-row items-center md:space-x-8">
                     <div class="w-32 h-32 bg-gray-200 rounded-full flex-shrink-0 mb-6 md:mb-0 flex items-center justify-center overflow-hidden">
                         <img id="profile-avatar-img" class="hidden w-full h-full object-cover" src="" alt="Profile Photo">
-                        <svg id="profile-avatar-placeholder" class="w-20 h-20 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        <div id="profile-avatar-placeholder" class="w-full h-full flex items-center justify-center bg-teal text-white text-6xl font-bold">
+                            </div>
                     </div>
                     
                     <div class="flex-grow text-center md:text-left">
@@ -90,24 +91,21 @@
                     <input type="text" id="edit-photo-url" placeholder="https://i.imgur.com/your-image.png" class="w-full p-3 border rounded-lg border-gray-300 focus:ring-teal focus:border-teal">
                     <p class="text-xs text-gray-500 mt-1">Paste a direct link to an image (e.g., from Imgur).</p>
                 </div>
-                
                 <p id="profile-update-message" class="text-sm text-center"></p>
-                
                 <button type="submit" id="save-profile-btn" class="w-full bg-teal text-white p-3 rounded-lg font-bold hover:bg-teal-700">Save Changes</button>
             </form>
         </div>
     </div>
 
-
     <script>
         // --- GOOGLE SCRIPT URL ---
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgvLGJfxDw9dnhddccv_dD7PIWQ-nCzqpsZWdHH_-5JKO53jKOzTMqnoCSNGUVcE_4/exec"; // Use your deployed URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgvLGJfxDw9dnhddccv_dD7PIWQ-nCzqpsZWdHH_-5JKO53jKOzTMqnoCSNGUVcE_4/exec";
 
         document.addEventListener('DOMContentLoaded', () => {
             const currentPage = window.location.pathname.split('/').pop();
             const userNameDisplay = document.getElementById('profile-user-name');
-            const avatarImg = document.getElementById('profile-avatar-img');
-            const avatarPlaceholder = document.getElementById('profile-avatar-placeholder');
+            const profileAvatarImg = document.getElementById('profile-avatar-img');
+            const profileAvatarPlaceholder = document.getElementById('profile-avatar-placeholder');
             
             // --- Session check ---
             const loggedInUser = sessionStorage.getItem('userName');
@@ -117,25 +115,33 @@
                 if (userNameDisplay) {
                     userNameDisplay.textContent = loggedInUser;
                 }
-                updateAvatar(userPhotoURL);
+                // Update main profile avatar on load, passing the user's name
+                updateAvatar(userPhotoURL, loggedInUser, profileAvatarImg, profileAvatarPlaceholder);
             } else {
                 alert("You must be logged in to view this page.");
                 window.location.href = 'index.html';
             }
 
-            // --- Function to update avatar display ---
-            function updateAvatar(url) {
-                if (url && url !== 'undefined' && url !== 'null') {
-                    avatarImg.src = url;
-                    avatarImg.classList.remove('hidden');
-                    avatarPlaceholder.classList.add('hidden');
+            // --- Avatar Function (displays photo or initial) ---
+            function updateAvatar(url, userName, imgElement, placeholderElement) {
+                if (url && url !== 'undefined' && url !== 'null' && url.trim() !== '') {
+                    // Has a photo URL
+                    imgElement.src = url;
+                    imgElement.classList.remove('hidden');
+                    placeholderElement.classList.add('hidden');
                 } else {
-                    avatarImg.classList.add('hidden');
-                    avatarPlaceholder.classList.remove('hidden');
+                    // No photo URL, use initial
+                    imgElement.classList.add('hidden');
+                    placeholderElement.classList.remove('hidden');
+                    let initial = "P"; // Default
+                    if (userName) {
+                        initial = userName.charAt(0).toUpperCase();
+                    }
+                    placeholderElement.textContent = initial;
                 }
             }
             
-            // --- Reusable Sidebar Builder ---
+            // --- Reusable Sidebar Builder (No Avatar, All Links) ---
             const sidebarContainer = document.getElementById('sidebar');
             if (sidebarContainer) {
                 const sidebarHTML = `
@@ -155,7 +161,7 @@
                 `;
                 sidebarContainer.innerHTML = sidebarHTML;
                 document.getElementById('logout-btn').addEventListener('click', () => {
-                    sessionStorage.clear(); // Clear all session data
+                    sessionStorage.clear();
                     alert("You have been logged out.");
                     window.location.href = 'index.html';
                 });
@@ -177,24 +183,19 @@
                 messageEl.textContent = '';
                 modal.classList.remove('hidden');
             });
-
             closeBtn.addEventListener('click', () => {
                 modal.classList.add('hidden');
             });
-
             editForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                saveBtn.disabled = true;
-                saveBtn.textContent = 'Saving...';
+                saveBtn.disabled = true; saveBtn.textContent = 'Saving...';
                 messageEl.textContent = '';
-
                 const formData = {
                     action: 'updateProfile',
                     email: sessionStorage.getItem('userEmail'),
                     newName: editNameInput.value,
                     newPhotoURL: editPhotoUrlInput.value
                 };
-
                 try {
                     const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
                     const result = await response.json();
@@ -204,25 +205,21 @@
                         sessionStorage.setItem('photoURL', result.photoURL);
                         
                         userNameDisplay.textContent = result.userName;
-                        updateAvatar(result.photoURL);
+                        // Update the avatar with the new name and URL
+                        updateAvatar(result.photoURL, result.userName, profileAvatarImg, profileAvatarPlaceholder);
                         
                         messageEl.textContent = "Profile updated successfully!";
                         messageEl.style.color = 'green';
                         
-                        setTimeout(() => {
-                            modal.classList.add('hidden');
-                        }, 1000);
-
+                        setTimeout(() => { modal.classList.add('hidden'); }, 1000);
                     } else {
                         throw new Error(result.message);
                     }
-
                 } catch (error) {
                     messageEl.textContent = 'Error: ' + error.message;
                     messageEl.style.color = 'red';
                 } finally {
-                    saveBtn.disabled = false;
-                    saveBtn.textContent = 'Save Changes';
+                    saveBtn.disabled = false; saveBtn.textContent = 'Save Changes';
                 }
             });
         });
